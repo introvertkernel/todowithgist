@@ -1,6 +1,6 @@
 package com.project.todowithgist.rest;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,12 +10,11 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.todowithgist.domain.Project;
 import com.project.todowithgist.payload.ProjectPayload;
 import com.project.todowithgist.payload.ProjectPayloadWrapper;
 import com.project.todowithgist.payload.ResponseHeader;
@@ -36,29 +35,38 @@ public class ProjectAPI {
 		try {
 			projectService.addProject(projectPayload, principal.getName());
 			responseHeader.setResponseCode(CommonConstants.SUC);
+			return new ResponseEntity<>(responseHeader, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseHeader.setResponseCode(CommonConstants.FAL);
 		}
-		return new ResponseEntity<>(responseHeader, HttpStatus.OK);
+		return new ResponseEntity<>(responseHeader, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@SuppressWarnings("unchecked")
-	@GetMapping("/")
+	@GetMapping("")
 	public ResponseEntity<ProjectPayloadWrapper> getAllProjects(@AuthenticationPrincipal OAuth2User principal) {
 		ResponseHeader responseHeader = new ResponseHeader();
 		ProjectPayloadWrapper payloadWrapper = new ProjectPayloadWrapper();
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
-			payloadWrapper.setProjectPayload((List<Project>) objectMapper.readValue(
-					new ObjectMapper().writeValueAsString(projectService.fetchAll(principal.getName())), ProjectPayload.class));
+
+			payloadWrapper.setProjectPayload(projectService.fetchAll(principal.getName()).stream().map(p -> {
+				try {
+					return objectMapper.readValue(new ObjectMapper().writeValueAsString(p), ProjectPayload.class);
+				} catch (JsonProcessingException e) {
+					e.printStackTrace();
+				}
+				return null;
+			}).collect(Collectors.toList()));
 			responseHeader.setResponseCode(CommonConstants.SUC);
+			payloadWrapper.setResponseHeader(responseHeader);
+			return new ResponseEntity<>(payloadWrapper, HttpStatus.OK);
 		} catch (Exception e) {
-			responseHeader.setResponseCode(CommonConstants.SUC);
+			responseHeader.setResponseCode(CommonConstants.FAL);
 			e.printStackTrace();
 		}
 		payloadWrapper.setResponseHeader(responseHeader);
-		return new ResponseEntity<>(payloadWrapper, HttpStatus.OK);
+		return new ResponseEntity<>(payloadWrapper, HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
 }
