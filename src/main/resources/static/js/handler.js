@@ -27,14 +27,18 @@ getAllProjects.paint = function (data) {
             var clone = template.content.cloneNode(true);
             var content = clone.querySelector("text");
             content.textContent = p.projectName;
-            var card = template.querySelector("#projectCards");
-            card.setAttribute("id",p.projectId);
-            card.setAttribute("row",i);
+            var card = clone.querySelectorAll(".projectCards");
+            card.item(0).setAttribute("id",p.projectId);
+            card.item(0).setAttribute("row",i);
             pDiv.appendChild(clone);
         });
     }
     stopSpinner();
-}
+};
+
+var projectCardClickHandler = function(pthis){
+
+};
 
 var addNewProject = function () {
     fetch('/user/projects/add', {
