@@ -29,7 +29,7 @@ public class Todo implements Serializable {
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	private String todoId;
 
-	@ManyToOne(fetch = FetchType.LAZY,optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "PROJECT_ID", nullable = false)
 	@JsonIgnore
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -40,11 +40,11 @@ public class Todo implements Serializable {
 
 	@Column(name = "TODO_STATUS")
 	private String todoStatus;
-	
-	@Column(name = "UPDATE_TS")
+
+	@Column(name = "UPDATE_TS", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime updateTs;
 
-	@Column(name = "CREATE_TS")
+	@Column(name = "CREATE_TS", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
 	private LocalDateTime createTs;
 
 	public String getTodoId() {

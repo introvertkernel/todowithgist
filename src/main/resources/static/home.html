@@ -7,7 +7,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
 	<meta name="generator" content="Hugo 0.80.0">
-	<title>Album example · Bootstrap v5.0</title>
+	<title>Todo Application</title>
 
 	<link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
 
@@ -107,7 +107,7 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel" contenteditable="true" projectId="">Project Name</h5><i class="fas fa-edit"></i>
+					<h5 class="modal-title" id="modal-title" contenteditable="true" projectId="">New Project</h5><i class="fas fa-edit"></i>
 
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="addOrUpdateTodoList(this);">
 						<span aria-hidden="true">Save&Close</span>
@@ -116,7 +116,7 @@
 				<div class="modal-body">
 					<div class="add-items d-flex"> <input id="add-new-input" type="text" class="form-control todo-list-input"
 							placeholder="Got new task? Add here"> <button id="add-new-todo"
-							class="add btn btn-primary font-weight-bold todo-list-add-btn">Add</button>
+							class="add btn btn-primary font-weight-bold todo-list-add-btn" onclick="addNewTodo()">Add</button>
 					</div>
 					<div class="list-wrapper">
 						<ul class="d-flex flex-column-reverse todo-list" style="list-style-type:none;" id="listul">

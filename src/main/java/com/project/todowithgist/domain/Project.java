@@ -16,6 +16,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @Table(name = "TB_PROJECT")
@@ -37,10 +39,11 @@ public class Project implements Serializable {
 	@Column(name = "PROJECT_NAME")
 	private String projectName;
 
-	@Column(name = "PROJECT_DESC")
-	private String projectDescription;
+	@JsonInclude(Include.NON_EMPTY)
+	@Column(name = "GIST_ID")
+	private String gistID;
 
-	@Column(name = "CREATE_TS")
+	@Column(name = "CREATE_TS", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
 	private LocalDateTime createTs;
 
 	public String getProjectId() {
@@ -67,20 +70,21 @@ public class Project implements Serializable {
 		this.projectName = projectName;
 	}
 
-	public String getProjectDescription() {
-		return projectDescription;
+	public String getGistID() {
+		return gistID;
 	}
 
-	public void setProjectDescription(String projectDescription) {
-		this.projectDescription = projectDescription;
+	public void setGistID(String gistID) {
+		this.gistID = gistID;
 	}
 
-	public Project(String projectId, User user, String projectName, String projectDescription) {
+	public Project(String projectId, User user, String projectName, String gistID, LocalDateTime createTs) {
 		super();
 		this.projectId = projectId;
 		this.user = user;
 		this.projectName = projectName;
-		this.projectDescription = projectDescription;
+		this.gistID = gistID;
+		this.createTs = createTs;
 	}
 
 	public Project(String projectId) {
@@ -94,8 +98,8 @@ public class Project implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Project [projectId=" + projectId + ", user=" + user + ", projectName=" + projectName
-				+ ", projectDescription=" + projectDescription + "]";
+		return "Project [projectId=" + projectId + ", user=" + user + ", projectName=" + projectName + ", gistID="
+				+ gistID + ", createTs=" + createTs + "]";
 	}
 
 }

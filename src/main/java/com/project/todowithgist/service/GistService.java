@@ -31,9 +31,6 @@ import com.project.todowithgist.security.AuthorizationHeaderUtil;
 public class GistService {
 
 	@Autowired
-	private AuthorizationHeaderUtil authorizationHeaderUtil;
-
-	@Autowired
 	private TodoRepository todoRepository;
 
 	@Autowired
@@ -57,13 +54,13 @@ public class GistService {
 		GistRequest gistRequest = new GistRequest(project.getProjectName(), files);
 		String auth = getAuthToken(userId);
 		String gistId = "";
-		if (checkIfGistExportExist(auth, project.getProjectDescription())) {
-			gistId = updateExistingGist(auth, project.getProjectDescription(), gistRequest);
+		if (checkIfGistExportExist(auth, project.getGistID())) {
+			gistId = updateExistingGist(auth, project.getGistID(), gistRequest);
 		} else {
 			gistId = createGist(auth, gistRequest);
 		}
 
-		project.setProjectDescription(gistId);
+		project.setGistID(gistId);
 		projectRepository.save(project);
 
 	}

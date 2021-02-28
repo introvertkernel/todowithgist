@@ -49,14 +49,18 @@ var projectCardClickHandler = function (pthis) {
     modal.find(".modal-title").text(pname);
     getAllTodo();
   } else {
-	modal.find(".modal-title").attr("projectId", "");
+    pid = "";
+    pname = "";
+    var modal = $("#main-modal");
+    modal.find(".modal-title").attr("projectId", "");
     modal.find(".modal-title").text("New Project");
-	document.querySelector("#listul").innerHTML = "";
+    document.querySelector("#listul").innerHTML = "";
     toggleModal();
   }
 };
 
 var addNewProject = function () {
+  startSpinner();
   fetch("/user/projects/add", {
     method: "POST",
     credentials: "same-origin",
@@ -64,11 +68,17 @@ var addNewProject = function () {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(getAddNewProjectRequest()),
-  }).then((response) =>
-    response.json().then((data) => {
+  })
+    .then((response) => response.json())
+    .then((data) => {
       console.log(data);
+      stopSpinner();
     })
-  );
+    .catch((error) => {
+      console.error(error);
+      $(".alert").alert();
+      stopSpinner();
+    });
 };
 
 var getAddNewProjectRequest = function () {
@@ -108,8 +118,8 @@ getAllTodo.paint = function (data) {
       clone.querySelector("input").checked = p.todoStatus === "C";
       pDiv.appendChild(clone);
     });
-    toggleModal();
   }
+  toggleModal();
   stopSpinner();
 };
 
@@ -144,28 +154,48 @@ var deleteTodo = function (pthis) {
     .then((data) => getAllTodo());
 };
 var addOrUpdateTodoList = function () {
-  fetch("/user/projects/todo/add", {
+  startSpinner();
+  fetch("/user/projects/add", {
     method: "POST",
     credentials: "same-origin",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(getAddTodo()),
-  }).then((response) =>
-    response.json().then((data) => {
-      console.log(data);
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Something went wrong", response.error);
+      }
+      return response.json();
     })
-  );
+    .then((data) => {
+      toggleModal();
+      console.log(data);
+      stopSpinner();
+    })
+    .catch((error) => {
+      console.error(error);
+      $(".alert").alert();
+      stopSpinner();
+    });
 };
 
 var getAddTodo = function () {
-  $("#listul li").map(function (p) {
-    debugger;
+  var todoObj = $.map($("#listul div"), function (val) {
     return {
-      todoId: "",
+      todoId: $(val).attr("todoId"),
+      todoDesc: $(val).text().trim(),
+      todoStatus: $($(val).find("input")[0]).prop("checked") ? "C" : "P",
     };
   });
-  return {};
+  var finalObj = {
+    projectId: pid,
+    projectName: $("#modal-title").text(),
+    todoPayload: todoObj,
+  };
+  console.log(finalObj);
+  return finalObj;
 };
 
 var toggleModal = function () {

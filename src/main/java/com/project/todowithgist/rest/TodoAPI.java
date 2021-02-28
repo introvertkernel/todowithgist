@@ -29,19 +29,19 @@ public class TodoAPI {
 	@Autowired
 	private TodoService todoService;
 
-	@PostMapping("/todo/add")
-	public ResponseEntity<ResponseHeader> addTodo(@AuthenticationPrincipal OAuth2User principal,
-			@RequestBody TodoPayload todoPayload) {
-		ResponseHeader responseHeader = new ResponseHeader();
-		try {
-			todoService.addTodo(todoPayload, todoPayload.getProjectId());
-			responseHeader.setResponseCode(CommonConstants.SUC);
-		} catch (Exception e) {
-			e.printStackTrace();
-			responseHeader.setResponseCode(CommonConstants.FAL);
-		}
-		return new ResponseEntity<>(responseHeader, HttpStatus.OK);
-	}
+//	@PostMapping("/todo/add")
+//	public ResponseEntity<ResponseHeader> addTodo(@AuthenticationPrincipal OAuth2User principal,
+//			@RequestBody TodoPayload todoPayload) {
+//		ResponseHeader responseHeader = new ResponseHeader();
+//		try {
+//			todoService.addTodo(todoPayload, todoPayload.getProjectId());
+//			responseHeader.setResponseCode(CommonConstants.SUC);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			responseHeader.setResponseCode(CommonConstants.FAL);
+//		}
+//		return new ResponseEntity<>(responseHeader, HttpStatus.OK);
+//	}
 
 	@GetMapping("/todo")
 	public ResponseEntity<TodoPayloadWrapper> fetchTodo(@AuthenticationPrincipal OAuth2User principal,

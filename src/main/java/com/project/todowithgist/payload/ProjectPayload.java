@@ -1,14 +1,12 @@
 package com.project.todowithgist.payload;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 
 public class ProjectPayload {
 
 	private String projectId;
 	private String projectName;
-
-	@JsonIgnore
-	private String projectDescription;
+	private List<TodoPayload> todoPayload;
 
 	public String getProjectName() {
 		return projectName;
@@ -16,14 +14,6 @@ public class ProjectPayload {
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
-	}
-
-	public String getProjectDescription() {
-		return projectDescription;
-	}
-
-	public void setProjectDescription(String projectDescription) {
-		this.projectDescription = projectDescription;
 	}
 
 	public String getProjectId() {
@@ -34,19 +24,25 @@ public class ProjectPayload {
 		this.projectId = projectId;
 	}
 
-//	public ProjectPayload(String projectName, String projectDescription) {
-//		super();
-//		this.projectName = projectName;
-//		this.projectDescription = projectDescription;
-//	}
-	
-	
+	public List<TodoPayload> getTodoPayload() {
+		return todoPayload;
+	}
+
+	public void setTodoPayload(List<TodoPayload> todoPayload) {
+		this.todoPayload = todoPayload;
+	}
 
 	public ProjectPayload(String projectId, String projectName, String projectDescription) {
 		super();
 		this.projectId = projectId;
 		this.projectName = projectName;
-		this.projectDescription = projectDescription;
+	}
+
+	public ProjectPayload(String projectId, String projectName, List<TodoPayload> todoPayload) {
+		super();
+		this.projectId = projectId;
+		this.projectName = projectName;
+		this.todoPayload = todoPayload;
 	}
 
 	public ProjectPayload() {
@@ -55,8 +51,8 @@ public class ProjectPayload {
 
 	@Override
 	public String toString() {
-		return "ProjectPayload [projectId=" + projectId + ", projectName=" + projectName + ", projectDescription="
-				+ projectDescription + "]";
+		return "ProjectPayload [projectId=" + projectId + ", projectName=" + projectName + ", todoPayload="
+				+ todoPayload + "]";
 	}
 
 }
