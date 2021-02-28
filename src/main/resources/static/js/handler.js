@@ -171,12 +171,14 @@ var addOrUpdateTodoList = function () {
     })
     .then((data) => {
       toggleModal();
-      console.log(data);
+	  console.log(data);
+	  getAllProjects();
       stopSpinner();
     })
     .catch((error) => {
       console.error(error);
-      $(".alert").alert();
+	  $(".alert").alert();
+	  getAllProjects();
       stopSpinner();
     });
 };

@@ -1,12 +1,16 @@
 package com.project.todowithgist.domain;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "TB_USER")
@@ -24,8 +28,10 @@ public class User implements Serializable {
 	@Column(name = "AUTH_TOKEN")
 	private String authToken;
 
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATE_TS")
-	private LocalDateTime createTs;
+	private Date createTs;
 
 	public String getUserEmail() {
 		return userId;

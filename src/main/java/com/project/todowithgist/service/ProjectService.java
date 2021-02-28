@@ -28,7 +28,7 @@ public class ProjectService {
 
 	public Iterable<Todo> addProject(ProjectPayload projectPayload, String userId) {
 		ObjectMapper mapper = new ObjectMapper();
-		Project project = new Project(projectPayload.getProjectId(), null, projectPayload.getProjectName(), null, null);
+		Project project = new Project(projectPayload.getProjectId(), null, projectPayload.getProjectName(), null);
 		Project updated = userRepository.findById(userId).map(user -> {
 			project.setUser(user);
 			return projectRespository.save(project);

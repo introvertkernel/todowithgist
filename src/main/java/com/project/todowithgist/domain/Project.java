@@ -1,7 +1,8 @@
 package com.project.todowithgist.domain;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -43,8 +47,10 @@ public class Project implements Serializable {
 	@Column(name = "GIST_ID")
 	private String gistID;
 
-	@Column(name = "CREATE_TS", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
-	private LocalDateTime createTs;
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "CREATE_TS", updatable = false)
+	private Date createTs;
 
 	public String getProjectId() {
 		return projectId;
@@ -78,13 +84,12 @@ public class Project implements Serializable {
 		this.gistID = gistID;
 	}
 
-	public Project(String projectId, User user, String projectName, String gistID, LocalDateTime createTs) {
+	public Project(String projectId, User user, String projectName, String gistID) {
 		super();
 		this.projectId = projectId;
 		this.user = user;
 		this.projectName = projectName;
 		this.gistID = gistID;
-		this.createTs = createTs;
 	}
 
 	public Project(String projectId) {
