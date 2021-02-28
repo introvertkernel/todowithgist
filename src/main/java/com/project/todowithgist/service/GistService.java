@@ -133,7 +133,7 @@ public class GistService {
 		if (todoList != null) {
 			totalCount = todoList.size();
 			for (Todo t : todoList) {
-				if (t.getTodoStatus().equals("Y")) {
+				if (t.getTodoStatus().equals("C")) {
 					completedCount++;
 					completed.append("- [x] " + t.getTodoDesc() + "\n");
 				} else {

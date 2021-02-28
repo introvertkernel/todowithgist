@@ -18,7 +18,7 @@ var getAllProjects = function () {
     .then((data) => getAllProjects.paint(data))
     .catch((error) => {
       console.error(error);
-      $(".alert").alert();
+      alertsHandler();
     });
 };
 
@@ -32,6 +32,7 @@ getAllProjects.paint = function (data) {
       var content = clone.querySelector("text");
       content.textContent = p.projectName;
       var card = clone.querySelectorAll(".projectCards");
+      card.item(0).setAttribute("pid", p.projectId);
       card.item(0).setAttribute("id", p.projectId);
       card.item(0).setAttribute("row", i);
       pDiv.appendChild(clone);
@@ -76,7 +77,7 @@ var addNewProject = function () {
     })
     .catch((error) => {
       console.error(error);
-      $(".alert").alert();
+      alertsHandler();
       stopSpinner();
     });
 };
@@ -89,6 +90,7 @@ var getAddNewProjectRequest = function () {
 };
 
 var getAllTodo = function () {
+	startSpinner();
   fetch("/user/projects/todo?projectId=" + pid, {
     method: "GET",
     credentials: "same-origin",
@@ -102,7 +104,12 @@ var getAllTodo = function () {
       }
       return response.json();
     })
-    .then((data) => getAllTodo.paint(data));
+	.then((data) => getAllTodo.paint(data))
+	.catch(error => {
+		console.log(error);
+		alertsHandler();
+	});
+	stopSpinner();
 };
 
 getAllTodo.paint = function (data) {
@@ -144,6 +151,7 @@ var deleteTodo = function (pthis) {
     },
   })
     .then((response) => {
+		toggleModal();
       if (!response.ok) {
         console.log(response);
         throw new Error("Something went wrong", response.error);
@@ -151,7 +159,14 @@ var deleteTodo = function (pthis) {
         $(pthis).parent().remove();
       }
     })
-    .then((data) => getAllTodo());
+    .then((data) => {
+		getAllTodo();
+		alertsHandler("alert-success","Deleted")
+	})
+	.catch(error => {
+		console.error(error);
+		alertsHandler();
+	});
 };
 var addOrUpdateTodoList = function () {
   startSpinner();
@@ -171,14 +186,15 @@ var addOrUpdateTodoList = function () {
     })
     .then((data) => {
       toggleModal();
-	  console.log(data);
+      console.log(data);
 	  getAllProjects();
+	  alertsHandler("alert-success","Saved")
       stopSpinner();
     })
     .catch((error) => {
       console.error(error);
-	  $(".alert").alert();
-	  getAllProjects();
+      alertsHandler();
+      getAllProjects();
       stopSpinner();
     });
 };
@@ -200,16 +216,70 @@ var getAddTodo = function () {
   return finalObj;
 };
 
+var exportToGist = function (pthis) {
+  startSpinner();
+  event.stopPropagation();
+  var tempId = $(pthis).parents().eq(4).attr("id");
+  fetch("http://localhost:8080/user/gist?projectId=" + tempId, {
+    method: "GET",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Something went wrong", response.error);
+      }
+      return response.json();
+    })
+    .then((data) => {
+	  console.log(data);
+	  alertsHandler("alert-success","Successfully exported to Gist")
+      stopSpinner();
+    })
+    .catch((error) => {
+      console.error(error);
+      alertsHandler();
+      stopSpinner();
+	});
+	getAllProjects();
+};
 var toggleModal = function () {
   $("#main-modal").modal("toggle");
 };
 
+var alertsHandler = function (type, msg) {
+  var pDiv = document.querySelector("#alert-div");
+  var template = document.querySelector("#alert-template");
+  var clone = template.content.cloneNode(true);
+  pDiv.appendChild(clone);
+  if (msg !== undefined) {
+    $("#alert")[0].innerHTML = msg;
+  } else {
+    $("#alert")[0].innerHTML =
+      "<strong>Error!</strong> Unable to process your request. Kindly try after sometime.";
+  }
+  $("#alert").removeClass();
+  $("#alert").addClass("alert");
+  if (type !== undefined) {
+    $("#alert").addClass(type);
+  } else {
+    $("#alert").addClass("alert-danger");
+  }
+  setTimeout(function () {
+    $("#alert").alert("close");
+  }, 5000);
+};
+
 // spinner
 var startSpinner = function () {
-  document.querySelector(".spanner").className += " show";
-  document.querySelector(".overlay").className += " show";
+  document.querySelector("#spanner").className += "spanner show";
+  document.querySelector("#overlay").className += "overlay show";
+  $("body").addClass("no-scroll")
 };
 var stopSpinner = function () {
-  document.querySelector(".spanner").className = "spanner";
-  document.querySelector(".overlay").className += "overlay";
+  document.querySelector("#spanner").className = "";
+  document.querySelector("#overlay").className = "";
+  $("body").removeClass("no-scroll")
 };

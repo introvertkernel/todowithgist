@@ -88,18 +88,30 @@
 									<rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%"
 										fill="#eceeef" dy=".3em">New Project</text>
 								</svg>
+								<div class="card-body">
+									<div class="d-flex justify-content-between align-items-center">
+										<div class="btn-group">
+											<button type="button" class="btn btn-sm btn-outline-secondary"
+												onclick="exportToGist(this)">Export to Gist</button>
+											<button type="button"
+												class="btn btn-sm btn-outline-secondary">Delete</button>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</template>
 				</div>
 			</div>
 
-			<div class="alert alert-warning alert-dismissible fade show" role="alert">
-				<strong>Error!</strong> Unable to process your request. Kindly try after sometime.
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
+			<div id="alert-div"></div>
+			<template id="alert-template">
+				<div id="alert" class="alert alert-danger">
+					<strong>Error!</strong> Unable to process your request. Kindly try after sometime.
+				</div>
+			</template>
+
+
 	</main>
 
 	<div class="modal fade bd-example-modal-lg" id="main-modal" tabindex="-1" role="dialog"
@@ -107,16 +119,23 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="modal-title" contenteditable="true" projectId="">New Project</h5><i class="fas fa-edit"></i>
+					<h5 class="modal-title" id="modal-title" contenteditable="true" projectId="">New Project</h5><i
+						class="fas fa-edit"></i>
 
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="addOrUpdateTodoList(this);">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+						onclick="addOrUpdateTodoList(this);">
+						<i class="fab fa-github"></i>
 						<span aria-hidden="true">Save&Close</span>
 					</button>
+					<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="exportToGist(this);">Export to Gist
+						<i class="fab fa-github"></i>
+					</button> -->
 				</div>
 				<div class="modal-body">
-					<div class="add-items d-flex"> <input id="add-new-input" type="text" class="form-control todo-list-input"
-							placeholder="Got new task? Add here"> <button id="add-new-todo"
-							class="add btn btn-primary font-weight-bold todo-list-add-btn" onclick="addNewTodo()">Add</button>
+					<div class="add-items d-flex"> <input id="add-new-input" type="text"
+							class="form-control todo-list-input" placeholder="Got new task? Add here"> <button
+							id="add-new-todo" class="add btn btn-primary font-weight-bold todo-list-add-btn"
+							onclick="addNewTodo()">Add</button>
 					</div>
 					<div class="list-wrapper">
 						<ul class="d-flex flex-column-reverse todo-list" style="list-style-type:none;" id="listul">
@@ -126,7 +145,8 @@
 								<div class="form-check" todoId=""> <label class="form-check-label"> <input
 											class="checkbox" type="checkbox">
 										<label id="task-name"></label> <i class="input-helper"></i></label>
-									<button id="delete-btn" type="button" class="close delete-btn" onclick="deleteTodo(this);">
+									<button id="delete-btn" type="button" class="close delete-btn"
+										onclick="deleteTodo(this);">
 										<i class="remove mdi mdi-close-circle-outline fas fa-trash-alt"></i>
 									</button>
 							</li>
@@ -136,17 +156,17 @@
 			</div>
 		</div>
 	</div>
-	<footer class="text-muted py-5">
+	<!-- <footer class="text-muted py-5">
 		<div class="container">
 			<p class="float-end mb-1">
 				<a href="#">Back to top</a>
 			</p>
 		</div>
-	</footer>
+	</footer> -->
 
 
-	<div class="overlay"></div>
-	<div class="spanner">
+	<div class="overlay" id="overlay"></div>
+	<div class="spanner" id="spanner">
 		<div class="loader"></div>
 	</div>
 

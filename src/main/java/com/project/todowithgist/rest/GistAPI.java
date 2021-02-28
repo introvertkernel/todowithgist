@@ -21,7 +21,7 @@ public class GistAPI {
 	@Autowired
 	private GistService gistService;
 
-	@GetMapping("/{projectId}")
+	@GetMapping("")
 	public ResponseEntity<ResponseHeader> exportAsGist(@AuthenticationPrincipal OAuth2User principal,
 			@RequestParam String projectId) {
 		ResponseHeader responseHeader = new ResponseHeader();
