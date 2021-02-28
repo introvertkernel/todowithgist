@@ -49,6 +49,17 @@ public class TodoPayload {
 		this.todoStatus = todoStatus;
 	}
 
+	public TodoPayload(String todoId, String todoDesc, String todoStatus) {
+		super();
+		this.todoId = todoId;
+		this.todoDesc = todoDesc;
+		this.todoStatus = todoStatus;
+	}
+
+	public TodoPayload() {
+		super();
+	}
+
 	@Override
 	public String toString() {
 		return "TodoPayload [todoId=" + todoId + ", projectId=" + projectId + ", todoDesc=" + todoDesc + ", todoStatus="

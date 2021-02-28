@@ -1,3 +1,43 @@
+.list-wrapper .delete-btn{
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.list-wrapper .completed {
+  text-decoration: line-through;
+  text-decoration-color: #3da5f4
+}
+.list-wrapper .remove {
+  cursor: pointer;
+  font-size: 1.438rem;
+  font-weight: 600;
+  width: 1.25rem;
+  height: 1.25rem;
+  line-height: 20px;
+  text-align: center
+}
+.list-wrapper .completed .remove {
+  color: #405189 !important
+}
+
+.list-wrapper .remove {
+  cursor: pointer;
+  font-size: 1.438rem;
+  font-weight: 600;
+  width: 1.25rem;
+  height: 1.25rem;
+  line-height: 20px;
+  text-align: center
+}
+
+.ml-auto,
+.list-wrapper .remove,
+.mx-auto {
+  margin-left: auto !important
+}
+
+
 /* spinner */
 
 .spanner{

@@ -2,12 +2,14 @@ package com.project.todowithgist.payload;
 
 import java.util.List;
 
-import com.project.todowithgist.domain.Todo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TodoPayloadWrapper {
 
+	@JsonProperty("ResponseHeader")
 	private ResponseHeader responseHeader;
-	private List<Todo> todoPayload;
+	@JsonProperty("TodoList")
+	private List<TodoPayload> todoPayload;
 
 	public ResponseHeader getResponseHeader() {
 		return responseHeader;
@@ -17,15 +19,15 @@ public class TodoPayloadWrapper {
 		this.responseHeader = responseHeader;
 	}
 
-	public List<Todo> getTodoPayload() {
+	public List<TodoPayload> getTodoPayload() {
 		return todoPayload;
 	}
 
-	public void setTodoPayload(List<Todo> list) {
+	public void setTodoPayload(List<TodoPayload> list) {
 		this.todoPayload = list;
 	}
 
-	public TodoPayloadWrapper(ResponseHeader responseHeader, List<Todo> todoPayload) {
+	public TodoPayloadWrapper(ResponseHeader responseHeader, List<TodoPayload> todoPayload) {
 		super();
 		this.responseHeader = responseHeader;
 		this.todoPayload = todoPayload;

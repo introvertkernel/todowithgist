@@ -18,14 +18,15 @@ public class TodoService {
 
 	@Autowired
 	private TodoRepository todoRepository;
-	
+
 	@Autowired
 	private ProjectRepository projectRepository;
 
-	public Todo addTodo(TodoPayload todoPayload, String projectId) throws JsonMappingException, JsonProcessingException {
+	public Todo addTodo(TodoPayload todoPayload, String projectId)
+			throws JsonMappingException, JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		Todo todo = mapper.readValue(new ObjectMapper().writeValueAsString(todoPayload), Todo.class);
-		return projectRepository.findById(projectId).map( project -> {
+		return projectRepository.findById(projectId).map(project -> {
 			todo.setProject(project);
 			return todoRepository.save(todo);
 		}).orElseThrow();
@@ -33,6 +34,11 @@ public class TodoService {
 
 	public List<Todo> fetchAll(String projectId) {
 		return todoRepository.findAllByProjectProjectId(projectId);
+	}
+
+	public void deleteTodo(String todoId) {
+		todoRepository.deleteById(todoId);
+
 	}
 
 }

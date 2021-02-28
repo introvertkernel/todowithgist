@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -30,6 +31,8 @@ public class Todo implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY,optional = false)
 	@JoinColumn(name = "PROJECT_ID", nullable = false)
+	@JsonIgnore
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Project project;
 
 	@Column(name = "TODO_DESC")
