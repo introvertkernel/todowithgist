@@ -247,6 +247,35 @@ var exportToGist = function (pthis) {
 	});
 	getAllProjects();
 };
+var deleteProject = function (pthis) {
+  startSpinner();
+  event.stopPropagation();
+  var tempId = $(pthis).parents().eq(4).attr("id");
+  fetch("/user/projects?projectId=" + tempId, {
+    method: "DELETE",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Something went wrong", response.error);
+      }
+      return response.json();
+    })
+    .then((data) => {
+	  console.log(data);
+	  alertsHandler("alert-success","Project deleted")
+      stopSpinner();
+    })
+    .catch((error) => {
+      console.error(error);
+      alertsHandler();
+      stopSpinner();
+	});
+	getAllProjects();
+};
 var toggleModal = function () {
   $("#main-modal").modal("toggle");
 };

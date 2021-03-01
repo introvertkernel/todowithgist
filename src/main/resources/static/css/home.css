@@ -1,3 +1,20 @@
+div .list-wrapper {
+
+  padding-top: inherit;
+  /* display: flex!important; */
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+  border-top-left-radius: calc(.3rem - 1px);
+  border-top-right-radius: calc(.3rem - 1px);
+}
+div .project-title {
+  display: flex;
+}
+
 .list-wrapper .delete-btn {
   padding: 0;
   border: none;
