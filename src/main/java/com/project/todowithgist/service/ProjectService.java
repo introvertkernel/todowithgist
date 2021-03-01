@@ -26,13 +26,13 @@ public class ProjectService {
 	@Autowired
 	private TodoRepository todoRepository;
 
-	public Iterable<Todo> addProject(ProjectPayload projectPayload, String userId) {
+	public Iterable<Todo> addProject(ProjectPayload projectPayload, String userId) throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
 		Project project = new Project(projectPayload.getProjectId(), null, projectPayload.getProjectName(), null);
 		Project updated = userRepository.findById(userId).map(user -> {
 			project.setUser(user);
 			return projectRespository.save(project);
-		}).orElseThrow();
+		}).orElseThrow(() -> new Exception("Error while fetching project details"+userId));
 		List<Todo> todoList = projectPayload.getTodoPayload().stream().map(t -> {
 			try {
 				Todo todoObj = mapper.readValue(new ObjectMapper().writeValueAsString(t), Todo.class);

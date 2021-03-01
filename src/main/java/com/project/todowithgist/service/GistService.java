@@ -25,7 +25,6 @@ import com.project.todowithgist.payload.GistResponse;
 import com.project.todowithgist.repository.ProjectRepository;
 import com.project.todowithgist.repository.TodoRepository;
 import com.project.todowithgist.repository.UserRepository;
-import com.project.todowithgist.security.AuthorizationHeaderUtil;
 
 @Service
 public class GistService {
@@ -143,11 +142,11 @@ public class GistService {
 		}
 
 		stringBuilder.append("**Summary:** " + completedCount + "/" + totalCount + " todos completed\n");
-		if (!pending.isEmpty()) {
+		if (pending.length() != 0) {
 			stringBuilder.append("### Pending\n");
 			stringBuilder.append(pending);
 		}
-		if (!completed.isEmpty()) {
+		if (completed.length() != 0) {
 			stringBuilder.append("### Completed\n");
 			stringBuilder.append(completed);
 		}
