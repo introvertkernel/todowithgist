@@ -41,7 +41,7 @@
 	<header>
 		<div class="navbar navbar-dark bg-dark shadow-sm">
 			<div class="container">
-				<a href="#" class="navbar-brand d-flex align-items-center">
+				<a href="/home.html" class="navbar-brand d-flex align-items-center">
 					<img src="./img/logo.png" alt="" class="" width="" height="50">
 					<strong>ToDo</strong>
 				</a>
@@ -115,7 +115,7 @@
 	</main>
 
 	<div class="modal fade bd-example-modal-lg" id="main-modal" tabindex="-1" role="dialog"
-		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -146,7 +146,7 @@
 							<li>
 								<div class="form-check" todoId=""> <label class="form-check-label"> <input
 											class="checkbox" type="checkbox">
-										<label id="task-name"></label> <i class="input-helper"></i></label>
+										<label id="task-name" contenteditable="true"></label> <i class="input-helper"></i></label>
 									<button id="delete-btn" type="button" class="close delete-btn"
 										onclick="deleteTodo(this);">
 										<i class="remove mdi mdi-close-circle-outline fas fa-trash-alt"></i>
