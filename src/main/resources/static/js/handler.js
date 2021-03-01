@@ -24,6 +24,7 @@ var getAllProjects = function () {
 
 getAllProjects.paint = function (data) {
   console.log(data);
+  $(".projectCards").remove();
   if (data.projectList.length > 0) {
     var pDiv = document.querySelector("#projectListContainer");
     var template = document.querySelector("#projectTemplate");
@@ -220,7 +221,7 @@ var exportToGist = function (pthis) {
   startSpinner();
   event.stopPropagation();
   var tempId = $(pthis).parents().eq(4).attr("id");
-  fetch("http://localhost:8080/user/gist?projectId=" + tempId, {
+  fetch("/user/gist?projectId=" + tempId, {
     method: "GET",
     credentials: "same-origin",
     headers: {
