@@ -133,6 +133,7 @@ getAllTodo.paint = function (data) {
 
 var addNewTodo = function () {
   var name = $("#add-new-input").val();
+  $("#add-new-input").val("");
   var pDiv = document.querySelector("#listul");
   var template = document.querySelector("#todo-template");
   var clone = template.content.cloneNode(true);
