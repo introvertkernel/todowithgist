@@ -3,6 +3,8 @@ package com.project.todowithgist.service;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +40,7 @@ public class TodoServiceTest {
 
 	@BeforeEach
 	public void setUp() {
-		payload = new TodoPayload("t1234", "My task", "C");
+		payload = new TodoPayload("t1234", "My task", "C", new Date().from(Instant.now()));
 		Mockito.when(projectRepository.findById(PROJECT_ID)).thenReturn(populateProject());
 		Mockito.when(projectRepository.findById(PROJECT_ID + 1)).thenReturn(Optional.empty());
 	}

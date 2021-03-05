@@ -24,6 +24,14 @@ public class CustomFilter extends GenericFilterBean {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
+//		if (!isAuthenticated() && "/home.html".equals(httpServletRequest.getRequestURI())) {
+//			String encodedRedirectURL = ((HttpServletResponse) response)
+//					.encodeRedirectURL(httpServletRequest.getContextPath() + "/");
+//
+//			httpServletResponse.setStatus(307);
+//			httpServletResponse.setHeader("Location", encodedRedirectURL);
+//		}
+
 		if (isAuthenticated() && "/".equals(httpServletRequest.getRequestURI())) {
 			String encodedRedirectURL = ((HttpServletResponse) response)
 					.encodeRedirectURL(httpServletRequest.getContextPath() + "/home.html");

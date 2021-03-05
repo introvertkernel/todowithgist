@@ -84,12 +84,25 @@ public class Project implements Serializable {
 		this.gistID = gistID;
 	}
 
+	public Date getCreateTs() {
+		return createTs;
+	}
+
+	public void setCreateTs(Date createTs) {
+		this.createTs = createTs;
+	}
+
 	public Project(String projectId, User user, String projectName, String gistID) {
 		super();
 		this.projectId = projectId;
 		this.user = user;
 		this.projectName = projectName;
 		this.gistID = gistID;
+	}
+
+	public Project(String projectId, User user, String projectName, String gistID, Date createTs) {
+		this(projectId, user, projectName, gistID);
+		this.createTs = createTs;
 	}
 
 	public Project(String projectId) {

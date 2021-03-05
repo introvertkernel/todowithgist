@@ -2,6 +2,8 @@ package com.project.todowithgist.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Date;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,10 +23,11 @@ public class ProjectTest {
 		user.setUserId("1234567890");
 		user.setUserName("myusername");
 		p1 = new Project();
-		p1.setProjectId("P1234");
-		p1.setProjectName("TestProject");
-		p1.setGistID("87678345");
-		p1.setUser(user);
+//		p1.setProjectId("P1234");
+//		p1.setProjectName("TestProject");
+//		p1.setGistID("87678345");
+//		p1.setUser(user);
+//		p1.setCreateTs(new Date());
 
 		p2 = new Project();
 		p2.setProjectId("P1235");
@@ -36,6 +39,12 @@ public class ProjectTest {
 	public void testEquals() {
 		assertThat(!p1.equals(p2));
 		assertThat(!p1.equals(new Project("P1234")));
+		assertThat(!p1.equals(new Project(null, null, null, null)));
+		assertThat(!p1.equals(new Project(null, null, "test", null)));
+		assertThat(!p1.equals(new Project(null, null, null, "test")));
+		assertThat(!p1.equals(new Project(null, p1.getUser(), null, null)));
+		assertThat(!p1.equals(null));
+		assertThat(!p1.equals(new Object()));
 	}
 
 	@Test

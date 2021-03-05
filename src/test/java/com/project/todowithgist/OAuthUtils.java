@@ -15,13 +15,17 @@ import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 public class OAuthUtils {
 
 	public static OAuth2User createUser(String name, String email) {
+		return createUser(name, email, "1234567890");
+	}
+
+	public static OAuth2User createUser(String name, String email, String userId) {
 		Map<String, Object> authorityAttr = new HashMap<>();
 		authorityAttr.put("key", "value");
 
 		GrantedAuthority authority = new OAuth2UserAuthority(authorityAttr);
 
 		Map<String, Object> attributes = new HashMap<>();
-		attributes.put("sub", "1234567890");
+		attributes.put("sub", userId);
 		attributes.put("name", name);
 		attributes.put("email", email);
 

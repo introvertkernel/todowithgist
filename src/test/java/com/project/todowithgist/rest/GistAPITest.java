@@ -48,7 +48,7 @@ public class GistAPITest {
 	public void givenNoToken_whenGetSecureRequest_thenUnauthorized() throws Exception {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("projectId", PROJECT_ID);
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/user/gist").params(params).accept(MediaType.APPLICATION_JSON))
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/api/user/gist").params(params).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnauthorized());
 	}
 
@@ -56,7 +56,7 @@ public class GistAPITest {
 	public void givenToken_whenGetSecureRequest_thenAuthorized() throws Exception {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("projectId", PROJECT_ID);
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/user/gist")
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/api/user/gist")
 				.with(authentication(OAuthUtils.getOauthAuthenticationFor(principal))).params(params)
 				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 	}

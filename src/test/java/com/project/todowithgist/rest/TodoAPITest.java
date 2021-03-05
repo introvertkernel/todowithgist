@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,6 +60,7 @@ public class TodoAPITest {
 	public void setUp() {
 		principal = OAuthUtils.createUser("tester", "tester@example.com");
 		Mockito.when(service.fetchAll(PROJECT_ID)).thenReturn(populateTodoList());
+		Mockito.when(service.fetchAll("0000")).thenThrow(NoSuchElementException.class);
 	}
 
 	@Test
@@ -66,7 +68,7 @@ public class TodoAPITest {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("projectId", PROJECT_ID);
 		this.mockMvc.perform(
-				MockMvcRequestBuilders.get("/user/projects/todo").params(params).accept(MediaType.APPLICATION_JSON))
+				MockMvcRequestBuilders.get("/api/user/projects/todo").params(params).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnauthorized());
 	}
 
@@ -74,25 +76,33 @@ public class TodoAPITest {
 	public void givenToken_whenGetSecureRequest_thenOk() throws Exception {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("projectId", PROJECT_ID);
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/user/projects/todo")
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/api/user/projects/todo")
 				.with(authentication(OAuthUtils.getOauthAuthenticationFor(principal))).params(params)
 				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	}
+
+	@Test
+	public void givenToken_whenGetSecureRequest_thenException() throws Exception {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("projectId", "0000");
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/api/user/projects/todo")
+				.with(authentication(OAuthUtils.getOauthAuthenticationFor(principal))).params(params)
+				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError());
 	}
 
 	@Test
 	public void givenNoToken_whenDeleteSecureRequest_thenUnauthorized() throws Exception {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("todoId", PROJECT_ID);
-		this.mockMvc.perform(
-				MockMvcRequestBuilders.delete("/user/projects/todo").params(params).accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isUnauthorized());
+		this.mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/projects/todo").params(params)
+				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isUnauthorized());
 	}
 
 	@Test
 	public void givenToken_whenDeleteSecureRequest_thenOk() throws Exception {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("todoId", PROJECT_ID);
-		this.mockMvc.perform(MockMvcRequestBuilders.delete("/user/projects/todo")
+		this.mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/projects/todo")
 				.with(authentication(OAuthUtils.getOauthAuthenticationFor(principal))).params(params)
 				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 	}

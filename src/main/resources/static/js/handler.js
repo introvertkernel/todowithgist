@@ -124,6 +124,7 @@ getAllTodo.paint = function (data) {
       clone.querySelector("tr").setAttribute("todoId", p.todoId);
       clone.querySelector("#task-name").textContent = p.todoDesc;
       clone.querySelector("input").checked = p.todoStatus === "C";
+      clone.querySelector("#date").textContent = p.createTs !== undefined ? p.createTs : "-";
       pDiv.appendChild(clone);
     });
   }
@@ -202,11 +203,11 @@ var addOrUpdateTodoList = function () {
 };
 
 var getAddTodo = function () {
-  var todoObj = $.map($("#listul div"), function (val) {
+  var todoObj = $.map($("#listul tr"), function (val) {
     return {
       todoId: $(val).attr("todoId"),
       todoDesc: $(val).find("#task-name").text(),
-      todoDate: $(val).find("#date").text() === "-" ? "" : $(val).find("#date").text(),
+      // todoDate: $(val).find("#date").text() === "-" ? "" : $(val).find("#date").text(),
       todoStatus: $($(val).find("input")[0]).prop("checked") ? "C" : "P",
     };
   });

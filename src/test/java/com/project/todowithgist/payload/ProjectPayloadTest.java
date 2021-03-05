@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -32,8 +34,8 @@ public class ProjectPayloadTest {
 
 	@BeforeAll
 	public static void setUp() {
-		TodoPayload payload1 = new TodoPayload("t1234", "Todo1", "C");
-		TodoPayload payload2 = new TodoPayload("t1235", "Todo2", "P");
+		TodoPayload payload1 = new TodoPayload("t1234", "Todo1", "C", new Date().from(Instant.now()));
+		TodoPayload payload2 = new TodoPayload("t1235", "Todo2", "P", new Date().from(Instant.now()));
 		todoPayload = new ArrayList<>(java.util.Arrays.asList(payload1, payload2));
 
 		payload = new ProjectPayload(PROJECT_ID, PROJECT_NAME, todoPayload);

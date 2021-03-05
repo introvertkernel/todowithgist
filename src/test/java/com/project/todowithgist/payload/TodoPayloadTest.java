@@ -5,6 +5,8 @@ import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -33,7 +35,7 @@ public class TodoPayloadTest {
 
 	@BeforeAll
 	private static void setUp() {
-		payload = new TodoPayload(TODO_ID, TODO_DESC, TODO_STATUS);
+		payload = new TodoPayload(TODO_ID, TODO_DESC, TODO_STATUS, new Date().from(Instant.now()));
 
 	}
 

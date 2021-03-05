@@ -3,8 +3,11 @@ package com.project.todowithgist.rest;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -49,10 +52,12 @@ public class ProjectAPITest {
 
 	private OAuth2User principal;
 
+	private static final String JSON_STR = "{\"projectId\":\"p1234\",\"projectName\":\"Test project\",\"todoPayload\":[{\"todoId\":\"t1234\",\"todoDesc\":\"Todo1\",\"todoStatus\":\"C\",\"createTs\":\"05-03-2021\"},{\"todoId\":\"t1235\",\"todoDesc\":\"Todo2\",\"todoStatus\":\"P\",\"createTs\":\"05-03-2021\"}]}";
+
 	@BeforeAll
 	public static void init() {
-		TodoPayload payload1 = new TodoPayload("t1234", "Todo1", "C");
-		TodoPayload payload2 = new TodoPayload("t1235", "Todo2", "P");
+		TodoPayload payload1 = new TodoPayload("t1234", "Todo1", "C", new Date().from(Instant.now()));
+		TodoPayload payload2 = new TodoPayload("t1235", "Todo2", "P", new Date().from(Instant.now()));
 
 		payload = new ProjectPayload("p1234", "Test project",
 				new ArrayList<>(java.util.Arrays.asList(payload1, payload2)));
@@ -63,13 +68,15 @@ public class ProjectAPITest {
 		principal = OAuthUtils.createUser("tester", "tester@example.com");
 
 		Mockito.when(projectService.addProject(payload, "1234567890")).thenReturn(populateTodo());
+		Mockito.when(projectService.addProject(payload, "1234")).thenThrow(UnsupportedOperationException.class);
 		Mockito.when(projectService.fetchAll("1234567890")).thenReturn(populateProjectList());
+		Mockito.when(projectService.fetchAll("1234")).thenThrow(NullPointerException.class);
 	}
 
 	@Test
 	public void givenNoToken_whenPostSecureRequest_thenUnauthorized() throws Exception {
 		this.mockMvc
-				.perform(MockMvcRequestBuilders.post("/user/projects/add")
+				.perform(MockMvcRequestBuilders.post("/api/user/projects/add")
 						.content(new ObjectMapper().writeValueAsString(payload)).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnauthorized());
 	}
@@ -79,23 +86,43 @@ public class ProjectAPITest {
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.println(mapper.writeValueAsString(payload));
 		this.mockMvc
-				.perform(MockMvcRequestBuilders.post("/user/projects/add")
+				.perform(MockMvcRequestBuilders.post("/api/user/projects/add")
 						.with(authentication(OAuthUtils.getOauthAuthenticationFor(principal)))
-						.content(mapper.writeValueAsString(payload)).accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isUnsupportedMediaType());
+						.contentType(MediaType.APPLICATION_JSON).content(JSON_STR).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void givenToken_whenPostSecureRequest_thenAuthorizedAndException() throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		System.out.println(mapper.writeValueAsString(payload));
+		this.mockMvc
+				.perform(MockMvcRequestBuilders.post("/api/user/projects/add")
+						.with(authentication(OAuthUtils.getOauthAuthenticationFor(
+								OAuthUtils.createUser("1234", "tester@example.com", "1234"))))
+						.contentType(MediaType.APPLICATION_JSON).content(JSON_STR).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void givenNoToken_whenGetSecureRequest_thenUnauthorized() throws Exception {
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/user/projects").accept(MediaType.APPLICATION_JSON))
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/api/user/projects").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnauthorized());
 	}
 
 	@Test
 	public void givenToken_whenGetSecureRequest_thenAuthorized() throws Exception {
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/user/projects")
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/api/user/projects")
 				.with(authentication(OAuthUtils.getOauthAuthenticationFor(principal)))
 				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	}
+
+	@Test
+	public void givenToken_whenGetSecureRequest_thenAuthorizedAndException() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/api/user/projects")
+				.with(authentication(OAuthUtils
+						.getOauthAuthenticationFor(OAuthUtils.createUser("1234", "tester@example.com", "1234"))))
+				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -103,7 +130,7 @@ public class ProjectAPITest {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("projectId", "p1234");
 		this.mockMvc.perform(
-				MockMvcRequestBuilders.delete("/user/projects").params(params).accept(MediaType.APPLICATION_JSON))
+				MockMvcRequestBuilders.delete("/api/user/projects").params(params).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnauthorized());
 	}
 
@@ -111,7 +138,7 @@ public class ProjectAPITest {
 	public void givenToken_whenDeleteSecureRequest_thenAuthorized() throws Exception {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("projectId", "p1234");
-		this.mockMvc.perform(MockMvcRequestBuilders.delete("/user/projects")
+		this.mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/projects")
 				.with(authentication(OAuthUtils.getOauthAuthenticationFor(principal))).params(params)
 				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 	}

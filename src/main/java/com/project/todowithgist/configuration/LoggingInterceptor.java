@@ -15,22 +15,22 @@ import org.springframework.http.client.ClientHttpResponse;
 
 import com.nimbusds.jose.util.StandardCharset;
 
-@Configuration
-public class LoggingInterceptor implements ClientHttpRequestInterceptor {
+//@Configuration
+//public class LoggingInterceptor implements ClientHttpRequestInterceptor {
 
-	static Logger LOGGER = LoggerFactory.getLogger(LoggingInterceptor.class);
+//	static Logger LOGGER = LoggerFactory.getLogger(LoggingInterceptor.class);
+//
+//	@Override
+//	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
+//			throws IOException {
+//		LOGGER.debug("Request Body: {} ", new String(body, StandardCharset.UTF_8));
+//		System.out.println("Request Body: {} " + new String(body, StandardCharset.UTF_8));
+//		ClientHttpResponse response = execution.execute(request, body);
+//		InputStreamReader isr = new InputStreamReader(response.getBody(), StandardCharset.UTF_8);
+//		String bodyStr = new BufferedReader(isr).lines().collect(Collectors.joining("\n"));
+//		LOGGER.debug("Response Body: {} ", bodyStr);
+//		System.out.println("Response Body: {} " + bodyStr);
+//		return response;
+//	}
 
-	@Override
-	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
-			throws IOException {
-		LOGGER.debug("Request Body: {} ", new String(body, StandardCharset.UTF_8));
-		System.out.println("Request Body: {} " + new String(body, StandardCharset.UTF_8));
-		ClientHttpResponse response = execution.execute(request, body);
-		InputStreamReader isr = new InputStreamReader(response.getBody(), StandardCharset.UTF_8);
-		String bodyStr = new BufferedReader(isr).lines().collect(Collectors.joining("\n"));
-		LOGGER.debug("Response Body: {} ", bodyStr);
-		System.out.println("Response Body: {} " + bodyStr);
-		return response;
-	}
-
-}
+//}

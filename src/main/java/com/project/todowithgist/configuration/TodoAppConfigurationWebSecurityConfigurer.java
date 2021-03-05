@@ -19,7 +19,7 @@ public class TodoAppConfigurationWebSecurityConfigurer extends WebSecurityConfig
                     "/**/*.gif",
                     "/**/*.svg",
                     "/**/*.jpg",
-                    "/**/*.html",
+                    "/**/index.html",
                     "/**/*.css",
                     "/**/*.js").permitAll()
             .anyRequest().authenticated()

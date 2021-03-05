@@ -3,8 +3,10 @@ package com.project.todowithgist.service;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,8 +50,8 @@ public class ProjectServiceTest {
 
 	@BeforeEach
 	public void setUp() {
-		TodoPayload payload1 = new TodoPayload("t1234", "Todo1", "C");
-		TodoPayload payload2 = new TodoPayload("t1235", "Todo2", "P");
+		TodoPayload payload1 = new TodoPayload("t1234", "Todo1", "C", new Date().from(Instant.now()));
+		TodoPayload payload2 = new TodoPayload("t1235", "Todo2", "P", new Date().from(Instant.now()));
 		todoPayload = new ArrayList<>(java.util.Arrays.asList(payload1, payload2));
 
 		projectPayload = new ProjectPayload(PROJECT_ID, PROJECT_NAME, todoPayload);
