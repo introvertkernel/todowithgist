@@ -16,15 +16,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	@Autowired
 	UserRepository userRepository;
 
-	@Autowired
-	private AuthorizationHeaderUtil authorizationHeaderUtil;
-
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest auth2UserRequest) {
 		OAuth2User oAuth2User = super.loadUser(auth2UserRequest);
 
-		userRepository.save(new User(oAuth2User.getName(), oAuth2User.getAttribute("login"),
-				getToken(auth2UserRequest)));
+		userRepository
+				.save(new User(oAuth2User.getName(), oAuth2User.getAttribute("login"), getToken(auth2UserRequest)));
 		return oAuth2User;
 
 	}

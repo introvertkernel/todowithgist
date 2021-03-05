@@ -101,10 +101,59 @@ public class Project implements Serializable {
 		super();
 	}
 
+//	@Override
+//	public String toString() {
+//		return "Project [projectId=" + projectId + ", user=" + user + ", projectName=" + projectName + ", gistID="
+//				+ gistID + ", createTs=" + createTs + "]";
+//	}
+
 	@Override
-	public String toString() {
-		return "Project [projectId=" + projectId + ", user=" + user + ", projectName=" + projectName + ", gistID="
-				+ gistID + ", createTs=" + createTs + "]";
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((createTs == null) ? 0 : createTs.hashCode());
+		result = prime * result + ((gistID == null) ? 0 : gistID.hashCode());
+		result = prime * result + ((projectId == null) ? 0 : projectId.hashCode());
+		result = prime * result + ((projectName == null) ? 0 : projectName.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Project other = (Project) obj;
+		if (createTs == null) {
+			if (other.createTs != null)
+				return false;
+		} else if (!createTs.equals(other.createTs))
+			return false;
+		if (gistID == null) {
+			if (other.gistID != null)
+				return false;
+		} else if (!gistID.equals(other.gistID))
+			return false;
+		if (projectId == null) {
+			if (other.projectId != null)
+				return false;
+		} else if (!projectId.equals(other.projectId))
+			return false;
+		if (projectName == null) {
+			if (other.projectName != null)
+				return false;
+		} else if (!projectName.equals(other.projectName))
+			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
+			return false;
+		return true;
 	}
 
 }

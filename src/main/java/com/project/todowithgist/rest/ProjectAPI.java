@@ -1,5 +1,6 @@
 package com.project.todowithgist.rest;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.todowithgist.payload.ProjectPayload;
-import com.project.todowithgist.payload.ProjectPayloadWrapper;
 import com.project.todowithgist.payload.ResponseHeader;
 import com.project.todowithgist.service.ProjectService;
 import com.project.todowithgist.utils.CommonConstants;
@@ -46,43 +46,39 @@ public class ProjectAPI {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<ProjectPayloadWrapper> getAllProjects(@AuthenticationPrincipal OAuth2User principal) {
-		ResponseHeader responseHeader = new ResponseHeader();
-		ProjectPayloadWrapper payloadWrapper = new ProjectPayloadWrapper();
+	public ResponseEntity<List<ProjectPayload>> getAllProjects(@AuthenticationPrincipal OAuth2User principal) {
+		List<ProjectPayload> projectPayload = null;
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
-
-			payloadWrapper.setProjectPayload(projectService.fetchAll(principal.getName()).stream().map(p -> {
+			projectPayload = projectService.fetchAll(principal.getName()).stream().map(p -> {
 				try {
 					return objectMapper.readValue(new ObjectMapper().writeValueAsString(p), ProjectPayload.class);
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
 				}
 				return null;
-			}).collect(Collectors.toList()));
-			responseHeader.setResponseCode(CommonConstants.SUC);
-			payloadWrapper.setResponseHeader(responseHeader);
-			return new ResponseEntity<>(payloadWrapper, HttpStatus.OK);
+			}).collect(Collectors.toList());
+			return new ResponseEntity<>(projectPayload, HttpStatus.OK);
 		} catch (Exception e) {
-			responseHeader.setResponseCode(CommonConstants.FAL);
 			e.printStackTrace();
 		}
-		payloadWrapper.setResponseHeader(responseHeader);
-		return new ResponseEntity<>(payloadWrapper, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(projectPayload, HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
 
 	@DeleteMapping("")
 	public ResponseEntity<Object> deleteProject(@AuthenticationPrincipal OAuth2User principal,
 			@RequestParam String projectId) {
-
+		ResponseHeader responseHeader = new ResponseHeader();
 		try {
 			projectService.deleteProject(projectId);
-			return new ResponseEntity<>(HttpStatus.OK);
+			responseHeader.setResponseCode(CommonConstants.SUC);
+			return new ResponseEntity<>(responseHeader, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		}
-		return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+		responseHeader.setResponseCode(CommonConstants.FAL);
+		return new ResponseEntity<>(responseHeader, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

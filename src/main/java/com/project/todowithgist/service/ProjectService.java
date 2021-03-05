@@ -47,8 +47,8 @@ public class ProjectService {
 		return todoRepository.saveAll(todoList);
 	}
 
-	public List<Project> fetchAll(String userEmail) {
-		return projectRespository.findAllByUserUserId(userEmail);
+	public List<Project> fetchAll(String userId) {
+		return projectRespository.findAllByUserUserId(userId);
 	}
 
 	public void deleteProject(String projectId) {

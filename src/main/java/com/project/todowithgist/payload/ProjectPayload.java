@@ -35,12 +35,6 @@ public class ProjectPayload {
 		this.todoPayload = todoPayload;
 	}
 
-	public ProjectPayload(String projectId, String projectName, String projectDescription) {
-		super();
-		this.projectId = projectId;
-		this.projectName = projectName;
-	}
-
 	public ProjectPayload(String projectId, String projectName, List<TodoPayload> todoPayload) {
 		super();
 		this.projectId = projectId;

@@ -33,12 +33,12 @@ public class User implements Serializable {
 	@Column(name = "CREATE_TS")
 	private Date createTs;
 
-	public String getUserEmail() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserEmail(String userEmail) {
-		this.userId = userEmail;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getUserName() {

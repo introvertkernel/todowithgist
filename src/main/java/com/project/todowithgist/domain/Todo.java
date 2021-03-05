@@ -99,10 +99,10 @@ public class Todo implements Serializable {
 		super();
 	}
 
-	@Override
-	public String toString() {
-		return "Todo [todoId=" + todoId + ", project=" + project + ", todoDesc=" + todoDesc + ", todoStatus="
-				+ todoStatus + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Todo [todoId=" + todoId + ", project=" + project + ", todoDesc=" + todoDesc + ", todoStatus="
+//				+ todoStatus + "]";
+//	}
 
 }
