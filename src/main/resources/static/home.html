@@ -93,8 +93,8 @@
 										<div class="btn-group">
 											<button type="button" class="btn btn-sm btn-outline-secondary"
 												onclick="exportToGist(this)">Export to Gist</button>
-											<button type="button"
-												class="btn btn-sm btn-outline-secondary" onclick="deleteProject(this);">Delete</button>
+											<button type="button" class="btn btn-sm btn-outline-secondary"
+												onclick="deleteProject(this);">Delete</button>
 										</div>
 									</div>
 								</div>
@@ -121,7 +121,7 @@
 				<div class="modal-header">
 					<div class="project-title">
 						<h5 class="modal-title" id="modal-title" contenteditable="true" projectId="">New Project</h5><i
-						class="fas fa-edit"></i>
+							class="fas fa-edit"></i>
 					</div>
 
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"
@@ -140,31 +140,29 @@
 							onclick="addNewTodo()">Add</button>
 					</div>
 					<div class="list-wrapper">
-						<ul class="d-flex flex-column-reverse todo-list" style="list-style-type:none;" id="listul">
-						</ul>
+						<table class="table">
+							<tbody id="listul">
+							</tbody>
+						</table>
+
 						<template id="todo-template">
-							<li>
-								<div class="form-check" todoId=""> <label class="form-check-label"> <input
-											class="checkbox" type="checkbox">
-										<label id="task-name" contenteditable="true"></label> <i class="input-helper"></i></label>
-									<button id="delete-btn" type="button" class="close delete-btn"
+
+							<tr>
+								<th scope="row"><input type="checkbox" aria-label="Checkbox for following text input">
+								</th>
+								<td id="task-name" contenteditable="true"></td>
+								<td id="date">-</td>
+								<td><button id="delete-btn" type="button" class="close delete-btn"
 										onclick="deleteTodo(this);">
 										<i class="remove mdi mdi-close-circle-outline fas fa-trash-alt"></i>
-									</button>
-							</li>
+									</button></td>
+							</tr>
 						</template>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- <footer class="text-muted py-5">
-		<div class="container">
-			<p class="float-end mb-1">
-				<a href="#">Back to top</a>
-			</p>
-		</div>
-	</footer> -->
 
 
 	<div class="overlay" id="overlay"></div>

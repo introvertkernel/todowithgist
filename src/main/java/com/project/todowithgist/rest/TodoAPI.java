@@ -21,7 +21,7 @@ import com.project.todowithgist.service.TodoService;
 import com.project.todowithgist.utils.CommonConstants;
 
 @RestController
-@RequestMapping("/user/projects")
+@RequestMapping("/api/user/projects")
 public class TodoAPI {
 
 	@Autowired

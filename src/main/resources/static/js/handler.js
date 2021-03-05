@@ -2,7 +2,7 @@ var pid, pname;
 
 var getAllProjects = function () {
   startSpinner();
-  fetch("/user/projects/", {
+  fetch("/api/user/projects/", {
     method: "GET",
     credentials: "same-origin",
     headers: {
@@ -25,10 +25,10 @@ var getAllProjects = function () {
 getAllProjects.paint = function (data) {
   console.log(data);
   $(".projectCards").remove();
-  if (data.projectList.length > 0) {
+  if (data.length > 0) {
     var pDiv = document.querySelector("#projectListContainer");
     var template = document.querySelector("#projectTemplate");
-    data.projectList.forEach((p, i) => {
+    data.forEach((p, i) => {
       var clone = template.content.cloneNode(true);
       var content = clone.querySelector("text");
       content.textContent = p.projectName;
@@ -63,7 +63,7 @@ var projectCardClickHandler = function (pthis) {
 
 var addNewProject = function () {
   startSpinner();
-  fetch("/user/projects/add", {
+  fetch("/api/user/projects/add", {
     method: "POST",
     credentials: "same-origin",
     headers: {
@@ -91,8 +91,8 @@ var getAddNewProjectRequest = function () {
 };
 
 var getAllTodo = function () {
-	startSpinner();
-  fetch("/user/projects/todo?projectId=" + pid, {
+  startSpinner();
+  fetch("/api/user/projects/todo?projectId=" + pid, {
     method: "GET",
     credentials: "same-origin",
     headers: {
@@ -105,23 +105,23 @@ var getAllTodo = function () {
       }
       return response.json();
     })
-	.then((data) => getAllTodo.paint(data))
-	.catch(error => {
-		console.log(error);
-		alertsHandler();
-	});
-	stopSpinner();
+    .then((data) => getAllTodo.paint(data))
+    .catch(error => {
+      console.log(error);
+      alertsHandler();
+    });
+  stopSpinner();
 };
 
 getAllTodo.paint = function (data) {
   console.log(data);
-  if (data.TodoList.length > 0) {
+  if (data.length > 0) {
     var pDiv = document.querySelector("#listul");
     pDiv.innerHTML = "";
     var template = document.querySelector("#todo-template");
-    data.TodoList.forEach((p, i) => {
+    data.forEach((p, i) => {
       var clone = template.content.cloneNode(true);
-      clone.querySelector("div").setAttribute("todoId", p.todoId);
+      clone.querySelector("tr").setAttribute("todoId", p.todoId);
       clone.querySelector("#task-name").textContent = p.todoDesc;
       clone.querySelector("input").checked = p.todoStatus === "C";
       pDiv.appendChild(clone);
@@ -144,8 +144,8 @@ var addNewTodo = function () {
 
 var deleteTodo = function (pthis) {
   debugger;
-  var todoId = $($(pthis).parent()).attr("todoid");
-  fetch("/user/projects/todo?todoId=" + todoId, {
+  var todoId = $(pthis).parents().eq(1).attr("todoid");
+  fetch("/api/user/projects/todo?todoId=" + todoId, {
     method: "DELETE",
     credentials: "same-origin",
     headers: {
@@ -153,26 +153,26 @@ var deleteTodo = function (pthis) {
     },
   })
     .then((response) => {
-		toggleModal();
+      toggleModal();
       if (!response.ok) {
         console.log(response);
         throw new Error("Something went wrong", response.error);
       } else {
-        $(pthis).parent().remove();
+        $(pthis).parents().eq(1).remove();
       }
     })
     .then((data) => {
-		getAllTodo();
-		alertsHandler("alert-success","Deleted")
-	})
-	.catch(error => {
-		console.error(error);
-		alertsHandler();
-	});
+      getAllTodo();
+      alertsHandler("alert-success", "Deleted")
+    })
+    .catch(error => {
+      console.error(error);
+      alertsHandler();
+    });
 };
 var addOrUpdateTodoList = function () {
   startSpinner();
-  fetch("/user/projects/add", {
+  fetch("/api/user/projects/add", {
     method: "POST",
     credentials: "same-origin",
     headers: {
@@ -189,8 +189,8 @@ var addOrUpdateTodoList = function () {
     .then((data) => {
       toggleModal();
       console.log(data);
-	  getAllProjects();
-	  alertsHandler("alert-success","Saved")
+      getAllProjects();
+      alertsHandler("alert-success", "Saved")
       stopSpinner();
     })
     .catch((error) => {
@@ -205,7 +205,8 @@ var getAddTodo = function () {
   var todoObj = $.map($("#listul div"), function (val) {
     return {
       todoId: $(val).attr("todoId"),
-      todoDesc: $(val).text().trim(),
+      todoDesc: $(val).find("#task-name").text(),
+      todoDate: $(val).find("#date").text() === "-" ? "" : $(val).find("#date").text(),
       todoStatus: $($(val).find("input")[0]).prop("checked") ? "C" : "P",
     };
   });
@@ -222,7 +223,7 @@ var exportToGist = function (pthis) {
   startSpinner();
   event.stopPropagation();
   var tempId = $(pthis).parents().eq(4).attr("id");
-  fetch("/user/gist?projectId=" + tempId, {
+  fetch("/api/user/gist?projectId=" + tempId, {
     method: "GET",
     credentials: "same-origin",
     headers: {
@@ -236,22 +237,22 @@ var exportToGist = function (pthis) {
       return response.json();
     })
     .then((data) => {
-	  console.log(data);
-	  alertsHandler("alert-success","Successfully exported to Gist")
+      console.log(data);
+      alertsHandler("alert-success", "Successfully exported to Gist")
       stopSpinner();
     })
     .catch((error) => {
       console.error(error);
       alertsHandler();
       stopSpinner();
-	});
-	getAllProjects();
+    });
+  getAllProjects();
 };
 var deleteProject = function (pthis) {
   startSpinner();
   event.stopPropagation();
   var tempId = $(pthis).parents().eq(4).attr("id");
-  fetch("/user/projects?projectId=" + tempId, {
+  fetch("/api/user/projects?projectId=" + tempId, {
     method: "DELETE",
     credentials: "same-origin",
     headers: {
@@ -265,16 +266,16 @@ var deleteProject = function (pthis) {
       return response.json();
     })
     .then((data) => {
-	  console.log(data);
-	  alertsHandler("alert-success","Project deleted")
+      console.log(data);
+      alertsHandler("alert-success", "Project deleted")
       stopSpinner();
     })
     .catch((error) => {
       console.error(error);
       alertsHandler();
       stopSpinner();
-	});
-	getAllProjects();
+    });
+  getAllProjects();
 };
 var toggleModal = function () {
   $("#main-modal").modal("toggle");

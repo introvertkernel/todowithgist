@@ -24,7 +24,7 @@ import com.project.todowithgist.service.ProjectService;
 import com.project.todowithgist.utils.CommonConstants;
 
 @RestController
-@RequestMapping("/user/projects")
+@RequestMapping("/api/user/projects")
 public class ProjectAPI {
 
 	@Autowired

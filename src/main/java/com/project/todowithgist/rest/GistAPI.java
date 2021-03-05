@@ -15,7 +15,7 @@ import com.project.todowithgist.service.GistService;
 import com.project.todowithgist.utils.CommonConstants;
 
 @RestController
-@RequestMapping("/user/gist")
+@RequestMapping("/api/user/gist")
 public class GistAPI {
 
 	@Autowired
