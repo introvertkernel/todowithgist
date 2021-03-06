@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Project.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">todowithgist</a> &gt; <a href="index.source.html" class="el_package">com.project.todowithgist.domain</a> &gt; <span class="el_source">Project.java</span></div><h1>Project.java</h1><pre class="source lang-java linenums">package com.project.todowithgist.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@Entity
+@Table(name = &quot;TB_PROJECT&quot;)
+public class Project implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(generator = &quot;system-uuid&quot;)
+	@GenericGenerator(name = &quot;system-uuid&quot;, strategy = &quot;uuid&quot;)
+	private String projectId;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = &quot;USER_ID&quot;, nullable = false)
+	@JsonIgnore
+	@JsonIgnoreProperties({ &quot;hibernateLazyInitializer&quot;, &quot;handler&quot; })
+	private User user;
+
+	@Column(name = &quot;PROJECT_NAME&quot;)
+	private String projectName;
+
+	@JsonInclude(Include.NON_EMPTY)
+	@Column(name = &quot;GIST_ID&quot;)
+	private String gistID;
+
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = &quot;CREATE_TS&quot;, updatable = false)
+	private Date createTs;
+
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.REMOVE, mappedBy = &quot;project&quot;)
+	private List&lt;Todo&gt; todoList;
+
+	public String getProjectId() {
+<span class="fc" id="L62">		return projectId;</span>
+	}
+
+	public void setProjectId(String projectId) {
+<span class="fc" id="L66">		this.projectId = projectId;</span>
+<span class="fc" id="L67">	}</span>
+
+	public User getUser() {
+<span class="fc" id="L70">		return user;</span>
+	}
+
+	public void setUser(User user) {
+<span class="fc" id="L74">		this.user = user;</span>
+<span class="fc" id="L75">	}</span>
+
+	public String getProjectName() {
+<span class="fc" id="L78">		return projectName;</span>
+	}
+
+	public void setProjectName(String projectName) {
+<span class="fc" id="L82">		this.projectName = projectName;</span>
+<span class="fc" id="L83">	}</span>
+
+	public String getGistID() {
+<span class="fc" id="L86">		return gistID;</span>
+	}
+
+	public void setGistID(String gistID) {
+<span class="fc" id="L90">		this.gistID = gistID;</span>
+<span class="fc" id="L91">	}</span>
+
+	public Date getCreateTs() {
+<span class="fc" id="L94">		return createTs;</span>
+	}
+
+	public void setCreateTs(Date createTs) {
+<span class="fc" id="L98">		this.createTs = createTs;</span>
+<span class="fc" id="L99">	}</span>
+
+	public Project(String projectId, User user, String projectName, String gistID) {
+<span class="fc" id="L102">		super();</span>
+<span class="fc" id="L103">		this.projectId = projectId;</span>
+<span class="fc" id="L104">		this.user = user;</span>
+<span class="fc" id="L105">		this.projectName = projectName;</span>
+<span class="fc" id="L106">		this.gistID = gistID;</span>
+<span class="fc" id="L107">	}</span>
+
+	public Project(String projectId, User user, String projectName, String gistID, Date createTs) {
+<span class="nc" id="L110">		this(projectId, user, projectName, gistID);</span>
+<span class="nc" id="L111">		this.createTs = createTs;</span>
+<span class="nc" id="L112">	}</span>
+
+	public Project(String projectId) {
+<span class="fc" id="L115">		super();</span>
+<span class="fc" id="L116">		this.projectId = projectId;</span>
+<span class="fc" id="L117">	}</span>
+
+	public Project() {
+<span class="fc" id="L120">		super();</span>
+<span class="fc" id="L121">	}</span>
+
+//	@Override
+//	public String toString() {
+//		return &quot;Project [projectId=&quot; + projectId + &quot;, user=&quot; + user + &quot;, projectName=&quot; + projectName + &quot;, gistID=&quot;
+//				+ gistID + &quot;, createTs=&quot; + createTs + &quot;]&quot;;
+//	}
+
+	@Override
+	public int hashCode() {
+<span class="fc" id="L131">		final int prime = 31;</span>
+<span class="fc" id="L132">		int result = 1;</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">		result = prime * result + ((createTs == null) ? 0 : createTs.hashCode());</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		result = prime * result + ((gistID == null) ? 0 : gistID.hashCode());</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">		result = prime * result + ((projectId == null) ? 0 : projectId.hashCode());</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		result = prime * result + ((projectName == null) ? 0 : projectName.hashCode());</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">		result = prime * result + ((user == null) ? 0 : user.hashCode());</span>
+<span class="fc" id="L138">		return result;</span>
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+<span class="fc bfc" id="L143" title="All 2 branches covered.">		if (this == obj)</span>
+<span class="fc" id="L144">			return true;</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">		if (obj == null)</span>
+<span class="fc" id="L146">			return false;</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">		if (getClass() != obj.getClass())</span>
+<span class="fc" id="L148">			return false;</span>
+<span class="fc" id="L149">		Project other = (Project) obj;</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		if (createTs == null) {</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">			if (other.createTs != null)</span>
+<span class="fc" id="L152">				return false;</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">		} else if (!createTs.equals(other.createTs))</span>
+<span class="fc" id="L154">			return false;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		if (gistID == null) {</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">			if (other.gistID != null)</span>
+<span class="fc" id="L157">				return false;</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		} else if (!gistID.equals(other.gistID))</span>
+<span class="nc" id="L159">			return false;</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">		if (projectId == null) {</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">			if (other.projectId != null)</span>
+<span class="fc" id="L162">				return false;</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">		} else if (!projectId.equals(other.projectId))</span>
+<span class="fc" id="L164">			return false;</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">		if (projectName == null) {</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">			if (other.projectName != null)</span>
+<span class="fc" id="L167">				return false;</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		} else if (!projectName.equals(other.projectName))</span>
+<span class="nc" id="L169">			return false;</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">		if (user == null) {</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">			if (other.user != null)</span>
+<span class="nc" id="L172">				return false;</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">		} else if (!user.equals(other.user))</span>
+<span class="nc" id="L174">			return false;</span>
+<span class="fc" id="L175">		return true;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResponseHeader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">todowithgist</a> &gt; <a href="index.source.html" class="el_package">com.project.todowithgist.payload</a> &gt; <span class="el_source">ResponseHeader.java</span></div><h1>ResponseHeader.java</h1><pre class="source lang-java linenums">package com.project.todowithgist.payload;
+
+public class ResponseHeader {
+
+	private String responseCode;
+	private String errorCode;
+	private String errorMessage;
+
+	public String getResponseCode() {
+<span class="fc" id="L10">		return responseCode;</span>
+	}
+
+	public void setResponseCode(String responseCode) {
+<span class="fc" id="L14">		this.responseCode = responseCode;</span>
+<span class="fc" id="L15">	}</span>
+
+	public String getErrorCode() {
+<span class="fc" id="L18">		return errorCode;</span>
+	}
+
+	public void setErrorCode(String errorCode) {
+<span class="fc" id="L22">		this.errorCode = errorCode;</span>
+<span class="fc" id="L23">	}</span>
+
+	public String getErrorMessage() {
+<span class="fc" id="L26">		return errorMessage;</span>
+	}
+
+	public void setErrorMessage(String errorMessage) {
+<span class="fc" id="L30">		this.errorMessage = errorMessage;</span>
+<span class="fc" id="L31">	}</span>
+
+	protected ResponseHeader(String responseCode, String errorCode, String errorMessage) {
+<span class="fc" id="L34">		super();</span>
+<span class="fc" id="L35">		this.responseCode = responseCode;</span>
+<span class="fc" id="L36">		this.errorCode = errorCode;</span>
+<span class="fc" id="L37">		this.errorMessage = errorMessage;</span>
+<span class="fc" id="L38">	}</span>
+
+	@Override
+	public String toString() {
+<span class="fc" id="L42">		return &quot;ResponseHeader [responseCode=&quot; + responseCode + &quot;, errorCode=&quot; + errorCode + &quot;, errorMessage=&quot;</span>
+				+ errorMessage + &quot;]&quot;;
+	}
+
+	public ResponseHeader() {
+<span class="fc" id="L47">		super();</span>
+<span class="fc" id="L48">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

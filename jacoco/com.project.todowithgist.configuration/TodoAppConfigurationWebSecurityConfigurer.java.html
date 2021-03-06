@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TodoAppConfigurationWebSecurityConfigurer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">todowithgist</a> &gt; <a href="index.source.html" class="el_package">com.project.todowithgist.configuration</a> &gt; <span class="el_source">TodoAppConfigurationWebSecurityConfigurer.java</span></div><h1>TodoAppConfigurationWebSecurityConfigurer.java</h1><pre class="source lang-java linenums">package com.project.todowithgist.configuration;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+
+@Configuration
+<span class="fc" id="L10">public class TodoAppConfigurationWebSecurityConfigurer extends WebSecurityConfigurerAdapter {</span>
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+<span class="fc" id="L14">		http</span>
+<span class="fc" id="L15">		.cors().and().csrf().disable()</span>
+<span class="fc" id="L16">        .authorizeRequests(a -&gt; a</span>
+<span class="fc" id="L17">            .antMatchers(&quot;/&quot;,&quot;/error&quot;, &quot;/webjars/**&quot;,&quot;/favicon.ico&quot;,</span>
+                    &quot;/**/*.png&quot;,
+                    &quot;/**/*.gif&quot;,
+                    &quot;/**/*.svg&quot;,
+                    &quot;/**/*.jpg&quot;,
+                    &quot;/**/index.html&quot;,
+                    &quot;/**/*.css&quot;,
+<span class="fc" id="L24">                    &quot;/**/*.js&quot;).permitAll()</span>
+<span class="fc" id="L25">            .anyRequest().authenticated()</span>
+        )
+<span class="fc" id="L27">        .exceptionHandling(e -&gt; e</span>
+<span class="fc" id="L28">            .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))</span>
+        )
+<span class="fc" id="L30">        .oauth2Login()</span>
+<span class="fc" id="L31">        .defaultSuccessUrl(&quot;/home.html&quot;, true).failureUrl(&quot;/index.html?error&quot;);</span>
+<span class="fc" id="L32">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
