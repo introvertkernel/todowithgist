@@ -38,7 +38,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
           
       - name: Build with maven
-        run: mvn -B test
+        run: mvn test jacoco:report
         
       - name: Generate jacoco badge
         id: jacoco
