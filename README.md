@@ -1,4 +1,6 @@
 # TodoWithGist
+[![codecov](.github/badges/jacoco.svg)](https://github.com/introvertkernel/todowithgist)
+
 A Demo Todo Application with Github authentication and gist export feature
 
 **This project is hosted with Heroku at https://todowithgist.herokuapp.com**
