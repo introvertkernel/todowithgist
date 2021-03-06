@@ -268,15 +268,16 @@ var deleteProject = function (pthis) {
     })
     .then((data) => {
       console.log(data);
-      alertsHandler("alert-success", "Project deleted")
+      alertsHandler("alert-success", "Project deleted");
+      getAllProjects();
       stopSpinner();
     })
     .catch((error) => {
       console.error(error);
       alertsHandler();
+      getAllProjects();
       stopSpinner();
     });
-  getAllProjects();
 };
 var toggleModal = function () {
   $("#main-modal").modal("toggle");

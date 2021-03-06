@@ -16,6 +16,7 @@ public class ProjectTest {
 
 	private Project p1;
 	private Project p2;
+	private Project p3;
 
 	@BeforeEach
 	public void setUp() {
@@ -33,6 +34,14 @@ public class ProjectTest {
 		p2.setProjectId("P1235");
 		p2.setProjectName("TestProject");
 		p2.setUser(user);
+		p2.setGistID("87678345");
+		p2.setCreateTs(new Date());
+		p3 = new Project();
+		p3.setProjectId("P1234");
+		p3.setProjectName("TestProject");
+		p3.setGistID("87678345");
+		p3.setUser(user);
+		p3.setCreateTs(new Date());
 	}
 
 	@Test
@@ -45,6 +54,14 @@ public class ProjectTest {
 		assertThat(!p1.equals(new Project(null, p1.getUser(), null, null)));
 		assertThat(!p1.equals(null));
 		assertThat(!p1.equals(new Object()));
+		assertThat(!p3.equals(p2));
+		assertThat(!p3.equals(new Project("P1234")));
+		assertThat(!p3.equals(new Project(null, null, null, null)));
+		assertThat(!p3.equals(new Project(null, null, "test", null)));
+		assertThat(!p3.equals(new Project(null, null, null, "test")));
+		assertThat(!p3.equals(new Project(null, p1.getUser(), null, null)));
+		assertThat(!p3.equals(null));
+		assertThat(!p3.equals(new Object()));
 	}
 
 	@Test
