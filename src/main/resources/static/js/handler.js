@@ -146,30 +146,35 @@ var addNewTodo = function () {
 var deleteTodo = function (pthis) {
   debugger;
   var todoId = $(pthis).parents().eq(1).attr("todoid");
-  fetch("/api/user/projects/todo?todoId=" + todoId, {
-    method: "DELETE",
-    credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      toggleModal();
-      if (!response.ok) {
-        console.log(response);
-        throw new Error("Something went wrong", response.error);
-      } else {
-        $(pthis).parents().eq(1).remove();
-      }
+  if (todoId !== undefined) {
+    fetch("/api/user/projects/todo?todoId=" + todoId, {
+      method: "DELETE",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .then((data) => {
-      getAllTodo();
-      alertsHandler("alert-success", "Deleted")
-    })
-    .catch(error => {
-      console.error(error);
-      alertsHandler();
-    });
+      .then((response) => {
+        toggleModal();
+        if (!response.ok) {
+          console.log(response);
+          throw new Error("Something went wrong", response.error);
+        } else {
+          $(pthis).parents().eq(1).remove();
+        }
+      })
+      .then((data) => {
+        getAllTodo();
+        alertsHandler("alert-success", "Deleted")
+      })
+      .catch(error => {
+        console.error(error);
+        alertsHandler();
+      });
+  } else {
+    $(pthis).parents().eq(1).remove();
+    stopSpinner();
+  }
 };
 var addOrUpdateTodoList = function () {
   startSpinner();
@@ -253,36 +258,31 @@ var deleteProject = function (pthis) {
   startSpinner();
   event.stopPropagation();
   var tempId = $(pthis).parents().eq(4).attr("id");
-  if(tempId !== undefined){
-    fetch("/api/user/projects?projectId=" + tempId, {
-      method: "DELETE",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
+  fetch("/api/user/projects?projectId=" + tempId, {
+    method: "DELETE",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Something went wrong", response.error);
+      }
+      return response.json();
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Something went wrong", response.error);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        alertsHandler("alert-success", "Project deleted");
-        getAllProjects();
-        stopSpinner();
-      })
-      .catch((error) => {
-        console.error(error);
-        alertsHandler();
-        getAllProjects();
-        stopSpinner();
-      });
-  } else {
-    stopSpinner();
-    $(pthis).parents().eq(1).remove();
-  }
+    .then((data) => {
+      console.log(data);
+      alertsHandler("alert-success", "Project deleted");
+      getAllProjects();
+      stopSpinner();
+    })
+    .catch((error) => {
+      console.error(error);
+      alertsHandler();
+      getAllProjects();
+      stopSpinner();
+    });
 };
 var toggleModal = function () {
   $("#main-modal").modal("toggle");
